@@ -245,6 +245,8 @@
        (read-char-code (make-limited-input-port in 4 #f)))
      (define lit-str
        (string-append (string #\\ #\u) seq))
+     (unless code
+       (error 'json:string-escape "unexpected EOF while reading unicode escape char"))
      (values lit-str (integer->char code))]
     [else
      (values (string #\\ chr) chr)]))
