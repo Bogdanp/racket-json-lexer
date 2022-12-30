@@ -60,19 +60,19 @@
   (define-values (line col pos)
     (port-next-location in))
 
-  (define (make-token type str [val str])
+  (define (make-token type [str (read-string 1 in)] [val str])
     (token type str val line col pos))
 
   (match (peek-char in)
-    [(? eof-object?) (make-token 'eof        (read-string 1 in))]
+    [(? eof-object?) (make-token 'eof eof)]
     [(? whitespace?) (make-token 'whitespace (read-whitespace in))]
 
-    [#\{ (make-token 'lcubrace (read-string 1 in))]
-    [#\} (make-token 'rcubrace (read-string 1 in))]
-    [#\[ (make-token 'lsqbrace (read-string 1 in))]
-    [#\] (make-token 'rsqbrace (read-string 1 in))]
-    [#\: (make-token 'colon    (read-string 1 in))]
-    [#\, (make-token 'comma    (read-string 1 in))]
+    [#\{ (make-token 'lcubrace)]
+    [#\} (make-token 'rcubrace)]
+    [#\[ (make-token 'lsqbrace)]
+    [#\] (make-token 'rsqbrace)]
+    [#\: (make-token 'colon)]
+    [#\, (make-token 'comma)]
 
     [#\"
      (define-values (s v)
@@ -117,15 +117,12 @@
 (define (read-string-while in p)
   (call-with-output-string
    (lambda (out)
-     (read-while in p (λ (c) (display c out))))))
+     (read-while in p (λ (c) (write-char c out))))))
 
 (define (read-while in p proc)
   (define-values (line col pos)
     (port-next-location in))
-
-  (with-handlers ([exn:fail?
-                   (λ (e)
-                     (raise-lexer-error (exn-message e) line col pos))])
+  (with-handlers ([exn:fail? (λ (e) (raise-lexer-error (exn-message e) line col pos))])
     (let loop ([c (peek-char in)] [p p])
       (define next-p
         (p c))
