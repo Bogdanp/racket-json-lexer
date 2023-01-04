@@ -89,21 +89,21 @@
        (port-next-location in))
      (unless (equal? (read-string 5 in) "false")
        (raise-lexer-error "expected false" line col pos))
-     (make-token 'false "false" #t)]
+     (make-token 'keyword "false" #t)]
 
     [#\t
      (define-values (line col pos)
        (port-next-location in))
      (unless (equal? (read-string 4 in) "true")
        (raise-lexer-error "expected true" line col pos))
-     (make-token 'true "true" #t)]
+     (make-token 'keyword "true" #t)]
 
     [#\n
      (define-values (line col pos)
        (port-next-location in))
      (unless (equal? (read-string 4 in) "null")
        (raise-lexer-error "expected null" line col pos))
-     (make-token 'null "null" null)]
+     (make-token 'keyword "null" null)]
 
     [c
      (raise-lexer-error (format "unexpected character: ~a" c) line col pos)]))
