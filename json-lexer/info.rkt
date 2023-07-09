@@ -7,4 +7,4 @@
 (define build-deps '("racket-doc"
                      "scribble-lib"))
 (define implies '("json-lexer-lib"))
-(define scribblings '(("json-lexer-manual.scrbl")))
+(define scribblings '(("json-lexer-manual.scrbl" () (parsing-library))))
