@@ -4,7 +4,7 @@
           (for-label json/lexer
                      json/pretty
                      racket/base
-                     racket/contract))
+                     racket/contract/base))
 
 @title{JSON Lexer}
 @author[(author+email "Bogdan Popa" "bogdan@defn.io")]
